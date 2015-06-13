@@ -9,3 +9,5 @@ You can choose between ...
 * different binding types of the lists.
 * modifying the left or the right list.
 * adding, replacing or updating a list element.
+
+![an app screenshot](./app-screenshot.png)
