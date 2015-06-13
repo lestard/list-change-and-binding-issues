@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox fx:id="root" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <GridPane alignment="CENTER" hgap="10.0" maxWidth="1.7976931348623157E308" vgap="10.0" VBox.vgrow="NEVER">
+        <columnConstraints>
+          <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="232.0" />
+          <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="278.0" minWidth="10.0" prefWidth="254.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+             <TextField fx:id="textFieldNewEntry" maxHeight="1.7976931348623157E308" promptText="New Entry"/>
+             <Button fx:id="buttonAddToList" maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Add"
+                     GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" GridPane.rowIndex="1">
+               <children>
+                  <TextField fx:id="textFieldPosition" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="73.0" promptText="Position" HBox.hgrow="NEVER" />
+                   <TextField fx:id="textFieldNewValue" maxHeight="1.7976931348623157E308"
+                              maxWidth="1.7976931348623157E308" promptText="New Value" HBox.hgrow="ALWAYS"/>
+               </children>
+            </HBox>
+            <HBox spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                   <Button fx:id="buttonReplaceValue" maxHeight="1.7976931348623157E308" mnemonicParsing="false"
+                           text="Replace" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1"/>
+                   <Button fx:id="buttonUpdateValue" maxHeight="1.7976931348623157E308" mnemonicParsing="false"
+                           text="Update"/>
+               </children>
+            </HBox>
+             <Label text="Apply to list on the ..." GridPane.rowIndex="2"/>
+            <VBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                   <RadioButton fx:id="buttonLeft" mnemonicParsing="false" selected="true" text="left">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="sideToggleGroup" />
+                     </toggleGroup>
+                  </RadioButton>
+                   <RadioButton fx:id="buttonRight" mnemonicParsing="false" text="right"
+                                toggleGroup="$sideToggleGroup"/>
+               </children>
+            </VBox>
+             <Label text="Binding Type" GridPane.rowIndex="3"/>
+            <VBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+               <children>
+                   <RadioButton fx:id="buttonUnidirectional" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT"
+                                selected="true" text="Unidirectional Binding" textAlignment="CENTER">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="bindingToggleGroup" />
+                     </toggleGroup>
+                  </RadioButton>
+                   <RadioButton fx:id="buttonUnidirectionalContent" mnemonicParsing="false"
+                                text="Unidirectional Content Binding" toggleGroup="$bindingToggleGroup"/>
+                   <RadioButton fx:id="buttonBidirectional" mnemonicParsing="false" text="Bidirectional Binding"
+                                toggleGroup="$bindingToggleGroup"/>
+                   <RadioButton fx:id="buttonBidirectionalContent" mnemonicParsing="false"
+                                text="Bidirectional Content Binding" toggleGroup="$bindingToggleGroup"/>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </GridPane>
+      <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+         <children>
+            <ListView fx:id="listViewLeft" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="244.0" HBox.hgrow="ALWAYS" />
+            <ListView fx:id="listViewRight" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="244.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+      <Label fx:id="labelInfo" style="-fx-border-color: #639cb7; -fx-border-radius: 3px; -fx-border-width: 3px; -fx-background-color: #9cd1e9;" text="Label" textAlignment="CENTER">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </Label>
+   </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>
