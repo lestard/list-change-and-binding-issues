@@ -3,9 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <VBox fx:id="root" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="10.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <GridPane alignment="CENTER" hgap="10.0" maxWidth="1.7976931348623157E308" vgap="10.0" VBox.vgrow="NEVER">
+       <GridPane alignment="CENTER" hgap="10.0" maxWidth="1.7976931348623157E308" vgap="20.0" VBox.vgrow="NEVER">
         <columnConstraints>
           <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="232.0" />
           <ColumnConstraints halignment="RIGHT" hgrow="NEVER" maxWidth="278.0" minWidth="10.0" prefWidth="254.0" />
@@ -17,36 +18,117 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-             <TextField fx:id="textFieldNewEntry" maxHeight="1.7976931348623157E308" promptText="New Entry"/>
+             <TextField fx:id="textFieldNewEntry" maxHeight="1.7976931348623157E308" promptText="New Entry">
+                 <tooltip>
+                     <Tooltip maxWidth="350.0"
+                              text="Type something which can be added as a new entry to the list(s) below."
+                              wrapText="true">
+                         <font>
+                             <Font size="28.0"/>
+                         </font>
+                     </Tooltip>
+                 </tooltip>
+             </TextField>
              <Button fx:id="buttonAddToList" maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="Add"
-                     GridPane.columnIndex="1" GridPane.halignment="LEFT"/>
-            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="20.0" GridPane.rowIndex="1">
+                     GridPane.columnIndex="1" GridPane.halignment="LEFT">
+                 <tooltip>
+                     <Tooltip maxWidth="350.0"
+                              text="Add the content from the input field on the left to the list(s) below."
+                              wrapText="true">
+                         <font>
+                             <Font size="28.0"/>
+                         </font>
+                     </Tooltip>
+                 </tooltip>
+             </Button>
+             <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                   spacing="10.0" GridPane.rowIndex="1">
                <children>
-                  <TextField fx:id="textFieldPosition" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefWidth="73.0" promptText="Position" HBox.hgrow="NEVER" />
+                   <TextField fx:id="textFieldPosition" maxHeight="1.7976931348623157E308" minWidth="-Infinity"
+                              prefWidth="73.0" promptText="Position" HBox.hgrow="NEVER">
+                       <tooltip>
+                           <Tooltip maxWidth="350.0"
+                                    text="Type in a position of an existing element of the list(s) below you want to replace or remove. The first position has the index 0!"
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
+                   </TextField>
                    <TextField fx:id="textFieldNewValue" maxHeight="1.7976931348623157E308"
-                              maxWidth="1.7976931348623157E308" promptText="New Value" HBox.hgrow="ALWAYS"/>
+                              maxWidth="1.7976931348623157E308" promptText="New Value" HBox.hgrow="ALWAYS">
+                       <tooltip>
+                           <Tooltip maxWidth="350.0"
+                                    text="Type in a new value to replace a value of an existing entry from the list(s) below."
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
+                   </TextField>
                </children>
             </HBox>
-            <HBox spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+             <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
                    <Button fx:id="buttonReplaceValue" maxHeight="1.7976931348623157E308" mnemonicParsing="false"
-                           text="Replace" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1"/>
-                   <Button fx:id="buttonUpdateValue" maxHeight="1.7976931348623157E308" mnemonicParsing="false"
-                           text="Update"/>
+                           text="Replace" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                       <tooltip>
+                           <Tooltip maxWidth="350.0" text="Replace a value of an entry of the list(s) below."
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
+                   </Button>
+                   <Button fx:id="buttonRemoveValue" maxHeight="1.7976931348623157E308" mnemonicParsing="false"
+                           text="Remove">
+                       <tooltip>
+                           <Tooltip maxWidth="350.0"
+                                    text="Remove an entry from the list(s) below with the position definied in the input field on the left."
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
+                   </Button>
                </children>
             </HBox>
              <Label text="Apply to list on the ..." GridPane.rowIndex="2"/>
-            <VBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+             <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                   <RadioButton fx:id="buttonLeft" mnemonicParsing="false" selected="true" text="left">
+                   <RadioButton fx:id="buttonLeft" maxHeight="1.7976931348623157E308" mnemonicParsing="false"
+                                selected="true" text="left">
                      <toggleGroup>
                         <ToggleGroup fx:id="sideToggleGroup" />
                      </toggleGroup>
+                       <tooltip>
+                           <Tooltip maxWidth="350.0"
+                                    text="A switch that applies modification operations to the left list, when active."
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
                   </RadioButton>
-                   <RadioButton fx:id="buttonRight" mnemonicParsing="false" text="right"
-                                toggleGroup="$sideToggleGroup"/>
+                   <RadioButton fx:id="buttonRight" maxHeight="1.7976931348623157E308" mnemonicParsing="false"
+                                text="right" toggleGroup="$sideToggleGroup">
+                       <tooltip>
+                           <Tooltip maxWidth="350.0"
+                                    text="A switch that applies modification operations to the right list, when active."
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
+                   </RadioButton>
                </children>
-            </VBox>
+             </HBox>
              <Label text="Binding Type" GridPane.rowIndex="3"/>
             <VBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
                <children>
@@ -55,13 +137,52 @@
                      <toggleGroup>
                         <ToggleGroup fx:id="bindingToggleGroup" />
                      </toggleGroup>
+                       <tooltip>
+                           <Tooltip maxWidth="350.0"
+                                    text="Setup a binding of an unidirectional type so the list on the left gets updated about changes of list on the right."
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
                   </RadioButton>
                    <RadioButton fx:id="buttonUnidirectionalContent" mnemonicParsing="false"
-                                text="Unidirectional Content Binding" toggleGroup="$bindingToggleGroup"/>
+                                text="Unidirectional Content Binding" toggleGroup="$bindingToggleGroup">
+                       <tooltip>
+                           <Tooltip maxWidth="350.0"
+                                    text="Setup a binding of an unidirectional type so the list content of the list on the left gets updated about the changes of the content of the list on the right."
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
+                   </RadioButton>
                    <RadioButton fx:id="buttonBidirectional" mnemonicParsing="false" text="Bidirectional Binding"
-                                toggleGroup="$bindingToggleGroup"/>
+                                toggleGroup="$bindingToggleGroup">
+                       <tooltip>
+                           <Tooltip maxWidth="350.0"
+                                    text="Setup a binding of an unidirectional type so the list on the left gets updated about changes of list on the right, and vice versa."
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
+                   </RadioButton>
                    <RadioButton fx:id="buttonBidirectionalContent" mnemonicParsing="false"
-                                text="Bidirectional Content Binding" toggleGroup="$bindingToggleGroup"/>
+                                text="Bidirectional Content Binding" toggleGroup="$bindingToggleGroup">
+                       <tooltip>
+                           <Tooltip maxWidth="350.0"
+                                    text="Setup a binding of an unidirectional type so the list content of the list on the left gets updated about the changes of the content of the list on the right, and vice versa."
+                                    wrapText="true">
+                               <font>
+                                   <Font size="28.0"/>
+                               </font>
+                           </Tooltip>
+                       </tooltip>
+                   </RadioButton>
                </children>
                <padding>
                   <Insets bottom="10.0" top="10.0" />
@@ -71,8 +192,30 @@
       </GridPane>
       <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
          <children>
-            <ListView fx:id="listViewLeft" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="244.0" HBox.hgrow="ALWAYS" />
-            <ListView fx:id="listViewRight" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="244.0" HBox.hgrow="ALWAYS" />
+             <ListView fx:id="listViewLeft" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       prefHeight="244.0" HBox.hgrow="ALWAYS">
+                 <tooltip>
+                     <Tooltip maxWidth="350.0"
+                              text="A list on the lift side which can be modified when the 'left' switch is active."
+                              wrapText="true">
+                         <font>
+                             <Font size="28.0"/>
+                         </font>
+                     </Tooltip>
+                 </tooltip>
+             </ListView>
+             <ListView fx:id="listViewRight" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+                       prefHeight="244.0" HBox.hgrow="ALWAYS">
+                 <tooltip>
+                     <Tooltip maxWidth="350.0"
+                              text="A list on the right side which can be modified when the 'right' switch is active."
+                              wrapText="true">
+                         <font>
+                             <Font size="28.0"/>
+                         </font>
+                     </Tooltip>
+                 </tooltip>
+             </ListView>
          </children>
       </HBox>
       <Label fx:id="labelInfo" style="-fx-border-color: #639cb7; -fx-border-radius: 3px; -fx-border-width: 3px; -fx-background-color: #9cd1e9;" text="Label" textAlignment="CENTER">

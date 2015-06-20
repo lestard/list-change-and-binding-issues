@@ -15,6 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
+import java.util.LinkedList;
+
 /**
  * This is a view class that shows an different bindings between two list properties.
  */
@@ -30,7 +32,7 @@ public class ListBindingView extends ViewController {
     @FXML private TextField textFieldPosition;
     @FXML private TextField textFieldNewValue;
     @FXML private Button buttonReplaceValue;
-    @FXML private Button buttonUpdateValue;
+    @FXML private Button buttonRemoveValue;
 
     @FXML private RadioButton buttonLeft;
     @FXML private RadioButton buttonRight;
@@ -50,6 +52,11 @@ public class ListBindingView extends ViewController {
 
     private Runnable unbindAction;
 
+    // current hideTransition for info label
+    private FadeTransition hideTransition;
+    private FadeTransition appearTransition;
+    private Timeline scheduleHideTransistionTimeline;
+
     public ListBindingView() {
         super(FXML_PATH);
         initializeView();
@@ -57,8 +64,8 @@ public class ListBindingView extends ViewController {
 
     private void initializeView() {
 
-        listPropertyLeft = new SimpleListProperty<>(FXCollections.observableArrayList());
-        listPropertyRight = new SimpleListProperty<>(FXCollections.observableArrayList());
+        listPropertyLeft = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
+        listPropertyRight = new SimpleListProperty<>(FXCollections.observableList(new LinkedList<>()));
 
         listViewLeft.setItems(listPropertyLeft);
         listViewRight.setItems(listPropertyRight);
@@ -73,6 +80,8 @@ public class ListBindingView extends ViewController {
     }
 
     private void initializeListeners() {
+
+        // modification actions
         buttonAddToList.setOnAction(e -> {
             addToList(textFieldNewEntry.getText());
             textFieldNewEntry.clear();
@@ -82,39 +91,49 @@ public class ListBindingView extends ViewController {
             textFieldPosition.clear();
             textFieldNewValue.clear();
         });
-        buttonUpdateValue.setOnAction(e -> {
-            updateValueAt(textFieldNewValue.getText(), textFieldPosition.getText());
+        buttonRemoveValue.setOnAction(e -> {
+            removeValueAt(textFieldPosition.getText());
             textFieldPosition.clear();
-            textFieldNewValue.clear();
         });
+
+        // binding type changes
         buttonUnidirectional.setOnAction(e -> {
+            showInfoLabel("Set unidirectional binding type and cleared lists.");
             unbind();
-            listPropertyLeft.bind(listPropertyRight);
+            Platform.runLater(() -> listPropertyLeft.bind(listPropertyRight));
             unbindAction = listPropertyLeft::unbind;
         });
         buttonUnidirectionalContent.setOnAction(e -> {
+            showInfoLabel("Set unidirectional content binding type and cleared lists.");
             unbind();
-            listPropertyLeft.bindContent(listPropertyRight);
+            Platform.runLater(() -> listPropertyLeft.bindContent(listPropertyRight));
             unbindAction = () -> listPropertyLeft.unbindContent(listPropertyRight);
         });
         buttonBidirectional.setOnAction(e -> {
+            showInfoLabel("Set bidirectional binding type and cleared lists.");
             unbind();
-            listPropertyLeft.bindBidirectional(listPropertyRight);
+            Platform.runLater(() -> listPropertyLeft.bindBidirectional(listPropertyRight));
             unbindAction = () -> listPropertyLeft.unbindBidirectional(listPropertyRight);
         });
         buttonBidirectionalContent.setOnAction(e -> {
+            showInfoLabel("Set bidirectional content binding type and cleared lists.");
             unbind();
-            listPropertyLeft.bindContentBidirectional(listPropertyRight);
+            Platform.runLater(() -> listPropertyLeft.bindContentBidirectional(listPropertyRight));
             unbindAction = () -> listPropertyLeft.unbindContentBidirectional(listPropertyRight);
         });
 
 
+        // notification about list changes
         ListChangeListener<StringProperty> listChangeListener = change -> {
             while (change.next()) {
-                if (change.wasUpdated()) {
-                    showInfoLabel("List value was updated.");
+                if (change.wasPermutated()) {
+                    showInfoLabel("List value was permutated.");
                 } else if (change.wasReplaced()) {
                     showInfoLabel("List value was replaced.");
+                } else if (change.wasRemoved()) {
+                    showInfoLabel("List value was removed.");
+                } else if (change.wasAdded()) {
+                    showInfoLabel("List value was added.");
                 }
             }
         };
@@ -130,22 +149,20 @@ public class ListBindingView extends ViewController {
         });
     }
 
-    private void updateValueAt(String text, String positionAsString) {
-
-        // Currently not works, some ideas to this problem:
-        // http://stackoverflow.com/questions/13906139/javafx-update-of-listview-if-an-element-of-observablelist-changes
-        // https://community.oracle.com/thread/2244635
-
-        ListProperty<StringProperty> listProperty = getActiveListProperty();
-        changeValue(text, positionAsString, () -> {
-
-            // just for debugging purpose in separate steps
-            // result of debugging: property change ist set and it gets the updated value, but the ListChangeListener
-            // does not fire an update event.
+    private void removeValueAt(String positionAsString) {
+        try {
             int position = parsePosition(positionAsString);
-            StringProperty property = listProperty.get(position);
-            property.setValue(text);
-        });
+            ListProperty<StringProperty> listProperty = getActiveListProperty();
+
+            if (position < listProperty.size()) {
+                listProperty.remove(position);
+            } else {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            alertError("Error", "Please enter a number in the 'Position' text field which is greater than 0 but " +
+                    "maximum equal to the list size.");
+        }
     }
 
     private void replaceValueAt(String text, String positionAsString) {
@@ -154,7 +171,7 @@ public class ListBindingView extends ViewController {
     }
 
     private int parsePosition(String positionAsString) {
-        return Integer.parseInt(positionAsString) - 1;
+        return Integer.parseInt(positionAsString);
     }
 
     private void changeValue(String text, String positionAsString, Runnable changeOperation) {
@@ -163,7 +180,7 @@ public class ListBindingView extends ViewController {
             ListProperty<StringProperty> listProperty = getActiveListProperty();
 
             if (position < listProperty.size()) {
-                ifInputIsValidExecute(text, changeOperation);
+                ifTextValueIsValidExecute(text, changeOperation);
             } else {
                 throw new NumberFormatException();
             }
@@ -182,10 +199,10 @@ public class ListBindingView extends ViewController {
     }
 
     private void addToList(String text) {
-        ifInputIsValidExecute(text, () -> getActiveListProperty().add(new SimpleStringProperty(text)));
+        ifTextValueIsValidExecute(text, () -> getActiveListProperty().add(new SimpleStringProperty(text)));
     }
 
-    private void ifInputIsValidExecute(final String text, Runnable modificationAction) {
+    private void ifTextValueIsValidExecute(final String text, Runnable modificationAction) {
         if (text != null && !text.trim().isEmpty()) {
             Platform.runLater(modificationAction);
         } else {
@@ -212,12 +229,15 @@ public class ListBindingView extends ViewController {
 
     private void hideInfoLabel(boolean withFade) {
         if (withFade) {
-            FadeTransition transition = new FadeTransition(Duration.seconds(1));
-            transition.setNode(labelInfo);
-            transition.setFromValue(1);
-            transition.setToValue(0);
-            transition.setOnFinished(e -> labelInfo.setVisible(false));
-            transition.play();
+
+            if (hideTransition == null) {
+                hideTransition = new FadeTransition(Duration.seconds(1));
+                hideTransition.setNode(labelInfo);
+                hideTransition.setFromValue(1);
+                hideTransition.setToValue(0);
+                hideTransition.setOnFinished(e -> labelInfo.setVisible(false));
+            }
+            hideTransition.playFromStart();
         } else {
             labelInfo.setVisible(false);
         }
@@ -227,14 +247,24 @@ public class ListBindingView extends ViewController {
         labelInfo.setText(infoText);
         labelInfo.setVisible(true);
 
-        FadeTransition transition = new FadeTransition(Duration.seconds(1), labelInfo);
-        transition.setFromValue(0);
-        transition.setToValue(1);
-        transition.play();
+        if (appearTransition == null) {
+            appearTransition = new FadeTransition(Duration.seconds(1), labelInfo);
+            appearTransition.setFromValue(0);
+            appearTransition.setToValue(1);
+        }
+        // cancel all other transitions / scheduled transitions
+        else {
+            appearTransition.stop();
+        }
+        if (hideTransition != null) {
+            hideTransition.stop();
+            scheduleHideTransistionTimeline.stop();
+        }
 
-        Timeline timeline = new Timeline();
-        timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5), null));
-        timeline.setOnFinished(e -> hideInfoLabel(true));
-        timeline.play();
+        appearTransition.playFromStart();
+        scheduleHideTransistionTimeline = new Timeline();
+        scheduleHideTransistionTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5), null));
+        scheduleHideTransistionTimeline.setOnFinished(e -> hideInfoLabel(true));
+        scheduleHideTransistionTimeline.play();
     }
 }
