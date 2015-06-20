@@ -55,7 +55,7 @@ public class ListBindingView extends ViewController {
     // current hideTransition for info label
     private FadeTransition hideTransition;
     private FadeTransition appearTransition;
-    private Timeline scheduleHideTransistionTimeline;
+    private Timeline scheduleHideTransitionTimeline;
 
     public ListBindingView() {
         super(FXML_PATH);
@@ -258,13 +258,13 @@ public class ListBindingView extends ViewController {
         }
         if (hideTransition != null) {
             hideTransition.stop();
-            scheduleHideTransistionTimeline.stop();
+            scheduleHideTransitionTimeline.stop();
         }
 
         appearTransition.playFromStart();
-        scheduleHideTransistionTimeline = new Timeline();
-        scheduleHideTransistionTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5), null));
-        scheduleHideTransistionTimeline.setOnFinished(e -> hideInfoLabel(true));
-        scheduleHideTransistionTimeline.play();
+        scheduleHideTransitionTimeline = new Timeline();
+        scheduleHideTransitionTimeline.getKeyFrames().add(new KeyFrame(Duration.seconds(5), null));
+        scheduleHideTransitionTimeline.setOnFinished(e -> hideInfoLabel(true));
+        scheduleHideTransitionTimeline.play();
     }
 }
