@@ -8,6 +8,6 @@ In the started app you can manipulate two lists whereas you have differnent opti
 You can choose between ...
 * different binding types of the lists.
 * modifying the left or the right list.
-* adding, replacing or updating a list element.
+* adding, replacing or removing a list element.
 
 ![an app screenshot](./app-screenshot.png)
